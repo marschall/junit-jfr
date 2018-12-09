@@ -91,61 +91,19 @@ public class JfrExtension implements
 
   @Category("JUnit")
   @StackTrace(false)
-  static class JUnitEvent extends Event {
-
-    @Label("unique ID")
-    @Description("The unique ID of the test or container")
-    private String uniqueId;
-
-    @Label("display name")
-    @Description("The display name for the test or container")
-    private String displayName;
-
-    @Label("test method")
-    @Description("The method associated with the test, if available")
-    private String testMethod;
-
-    String getUniqueId() {
-      return this.uniqueId;
-    }
-
-    void setUniqueId(String operationName) {
-      this.uniqueId = operationName;
-    }
-
-    String getDisplayName() {
-      return this.displayName;
-    }
-
-    void setDisplayName(String query) {
-      this.displayName = query;
-    }
-
-    String getTestMethod() {
-      return this.testMethod;
-    }
-
-    void setTestMethod(String query) {
-      this.testMethod = query;
-    }
-
-  }
-
-  @Category("JUnit")
-  @StackTrace(false)
   @Label("Test execution")
   @Description("test execution without @BeforeEach and @AfterEach methods")
   static class TestExecutionEvent extends Event {
 
-    @Label("unique ID")
+    @Label("Unique ID")
     @Description("The unique ID of the test or container")
     private String uniqueId;
 
-    @Label("display name")
+    @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
 
-    @Label("test method")
+    @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
 
@@ -177,19 +135,19 @@ public class JfrExtension implements
 
   @Category("JUnit")
   @StackTrace(false)
-  @Label("Test execution with each")
+  @Label("Test Execution with *Each")
   @Description("test execution with @BeforeEach and @AfterEach methods")
   static class TestWithEachExecutionEvent extends Event {
 
-    @Label("unique ID")
+    @Label("Unique ID")
     @Description("The unique ID of the test or container")
     private String uniqueId;
 
-    @Label("display name")
+    @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
 
-    @Label("test method")
+    @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
 
@@ -222,19 +180,19 @@ public class JfrExtension implements
 
   @Category("JUnit")
   @StackTrace(false)
-  @Label("Test execution with all")
-  @Description("test execution with @BeforeEach and @AfterEach methods")
+  @Label("Test Execution with *All")
+  @Description("test execution with @BeforeAll and @AfterAll methods")
   static class TestWithAllExecutionEvent extends Event {
 
-    @Label("unique ID")
+    @Label("Unique ID")
     @Description("The unique ID of the test or container")
     private String uniqueId;
 
-    @Label("display name")
+    @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
 
-    @Label("test method")
+    @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
 
