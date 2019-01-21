@@ -29,7 +29,7 @@ public class JfrExtension implements
 
   @Override
   public void beforeTestExecution(ExtensionContext context) {
-    TestExecutionEvent event = new TestExecutionEvent();
+    var event = new TestExecutionEvent();
     event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
@@ -39,14 +39,14 @@ public class JfrExtension implements
 
   @Override
   public void afterTestExecution(ExtensionContext context) {
-    TestExecutionEvent event = this.getEvent(TEST_JFR_EVENT, TestExecutionEvent.class, context);
+    var event = this.getEvent(TEST_JFR_EVENT, TestExecutionEvent.class, context);
     event.end();
     event.commit();
   }
 
   @Override
   public void beforeEach(ExtensionContext context) {
-    TestWithEachExecutionEvent event = new TestWithEachExecutionEvent();
+    var event = new TestWithEachExecutionEvent();
     event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
@@ -56,14 +56,14 @@ public class JfrExtension implements
 
   @Override
   public void afterEach(ExtensionContext context) {
-    TestWithEachExecutionEvent event = this.getEvent(EACH_JFR_EVENT, TestWithEachExecutionEvent.class, context);
+    var event = this.getEvent(EACH_JFR_EVENT, TestWithEachExecutionEvent.class, context);
     event.end();
     event.commit();
   }
 
   @Override
   public void beforeAll(ExtensionContext context) {
-    TestWithAllExecutionEvent event = new TestWithAllExecutionEvent();
+    var event = new TestWithAllExecutionEvent();
     event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
@@ -74,7 +74,7 @@ public class JfrExtension implements
 
   @Override
   public void afterAll(ExtensionContext context) {
-    TestWithAllExecutionEvent event = this.getEvent(ALL_JFR_EVENT, TestWithAllExecutionEvent.class, context);
+    var event = this.getEvent(ALL_JFR_EVENT, TestWithAllExecutionEvent.class, context);
     event.end();
     event.commit();
   }
