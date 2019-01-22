@@ -15,30 +15,30 @@ import jdk.jfr.Label;
 class JfrExtensionTest {
 
   @BeforeAll
-  static void beforeAll() {
+  static void beforeAll1() {
     DemoEvent demoEvent = new DemoEvent();
-    demoEvent.setName("@BeforeAll");
+    demoEvent.setName("@BeforeAll(1)");
     demoEvent.commit();
   }
 
-  @AfterAll
-  static void afterAll() {
+  @BeforeAll
+  static void beforeAll2() {
     DemoEvent demoEvent = new DemoEvent();
-    demoEvent.setName("@AfterAll");
+    demoEvent.setName("@BeforeAll(2)");
     demoEvent.commit();
   }
 
   @BeforeEach
-  void beforeEach() {
+  void beforeEach1() {
     DemoEvent demoEvent = new DemoEvent();
-    demoEvent.setName("@BeforeEach");
+    demoEvent.setName("@BeforeEach(1)");
     demoEvent.commit();
   }
 
-  @AfterEach
-  void afterEach() {
+  @BeforeEach
+  void beforeEach2() {
     DemoEvent demoEvent = new DemoEvent();
-    demoEvent.setName("@AfterEach");
+    demoEvent.setName("@BeforeEach(1)");
     demoEvent.commit();
   }
 
@@ -53,6 +53,35 @@ class JfrExtensionTest {
   void test2() {
     DemoEvent demoEvent = new DemoEvent();
     demoEvent.setName("test2");
+    demoEvent.commit();
+  }
+
+
+  @AfterEach
+  void afterEach1() {
+    DemoEvent demoEvent = new DemoEvent();
+    demoEvent.setName("@AfterEach(1)");
+    demoEvent.commit();
+  }
+
+  @AfterEach
+  void afterEach2() {
+    DemoEvent demoEvent = new DemoEvent();
+    demoEvent.setName("@AfterEach(2)");
+    demoEvent.commit();
+  }
+
+  @AfterAll
+  static void afterAll1() {
+    DemoEvent demoEvent = new DemoEvent();
+    demoEvent.setName("@AfterAll(1)");
+    demoEvent.commit();
+  }
+
+  @AfterAll
+  static void afterAll2() {
+    DemoEvent demoEvent = new DemoEvent();
+    demoEvent.setName("@AfterAll(2)");
     demoEvent.commit();
   }
 
