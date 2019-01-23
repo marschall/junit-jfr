@@ -1,5 +1,7 @@
 package com.github.marschall.junit.jfr;
 
+import java.lang.reflect.Method;
+
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
@@ -46,7 +48,7 @@ public class JfrExtension implements
     
     var event = new BeforeEachExecutionEvent();
     event.setDisplayName(context.getDisplayName());
-    context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestMethod().ifPresent(method -> event.setTestMethod(getMethodName(method)));
     context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     storeEvent(context, BEFORE_EACH_JFR_EVENT, event);
     event.begin();
@@ -58,7 +60,7 @@ public class JfrExtension implements
     
     var event = new TestExecutionEvent();
     event.setDisplayName(context.getDisplayName());
-    context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestMethod().ifPresent(method -> event.setTestMethod(getMethodName(method)));
     context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     this.getStore(context).put(TEST_JFR_EVENT, event);
     event.begin();
@@ -70,7 +72,7 @@ public class JfrExtension implements
     
     var event = new AfterEachExecutionEvent();
     event.setDisplayName(context.getDisplayName());
-    context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestMethod().ifPresent(method -> event.setTestMethod(getMethodName(method)));
     context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     storeEvent(context, AFTER_EACH_JFR_EVENT, event);
     event.begin();
@@ -107,6 +109,32 @@ public class JfrExtension implements
   
   private void storeEvent(ExtensionContext context, String key, Event event) {
     this.getStore(context).put(key, event);
+  }
+  
+  private static String getMethodName(Method method) {
+    boolean isVoid = method.getReturnType() == Void.TYPE;
+    boolean hasParameters = method.getParameterCount() == 0;
+    StringBuilder buffer = new StringBuilder();
+    if (!isVoid) {
+      buffer.append(method.getReturnType().getSimpleName());
+      buffer.append(' ');
+    }
+    buffer.append(method.getName());
+    if (hasParameters) {
+      buffer.append('(');
+      boolean first = true;
+      for (Class<?> parameterType : method.getParameterTypes()) {
+        if (!first) {
+          buffer.append(", ");
+        }
+        buffer.append(parameterType.getSimpleName());
+        first = false;
+      }
+      buffer.append(')');
+    } else {
+      buffer.append("()");
+    }
+    return buffer.toString();
   }
 
   // defining the properties in the superclass does not seem to work :-(
