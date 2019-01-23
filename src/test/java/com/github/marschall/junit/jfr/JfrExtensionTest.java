@@ -4,14 +4,15 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import jdk.jfr.Category;
 import jdk.jfr.Event;
 import jdk.jfr.Label;
 
-@ExtendWith(JfrExtension.class)
+@JfrProfiled
+@DisplayName("JFR Demo Test")
 class JfrExtensionTest {
 
   @BeforeAll
@@ -43,6 +44,7 @@ class JfrExtensionTest {
   }
 
   @Test
+  @DisplayName("TEST 1")
   void test1() {
     DemoEvent demoEvent = new DemoEvent();
     demoEvent.setName("test1");
@@ -50,6 +52,7 @@ class JfrExtensionTest {
   }
 
   @Test
+  @DisplayName("TEST II")
   void test2() {
     DemoEvent demoEvent = new DemoEvent();
     demoEvent.setName("test2");

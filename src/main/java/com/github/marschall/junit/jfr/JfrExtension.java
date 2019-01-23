@@ -34,9 +34,8 @@ public class JfrExtension implements
   @Override
   public void beforeAll(ExtensionContext context) {
     var event = new BeforeAllExecutionEvent();
-    event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
-    context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     storeEvent(context, BEFORE_ALL_JFR_EVENT, event);
     event.begin();
   }
@@ -46,9 +45,9 @@ public class JfrExtension implements
     stop(context.getParent().get(), BEFORE_ALL_JFR_EVENT);
     
     var event = new BeforeEachExecutionEvent();
-    event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     storeEvent(context, BEFORE_EACH_JFR_EVENT, event);
     event.begin();
   }
@@ -58,9 +57,9 @@ public class JfrExtension implements
     stop(context, BEFORE_EACH_JFR_EVENT);
     
     var event = new TestExecutionEvent();
-    event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     this.getStore(context).put(TEST_JFR_EVENT, event);
     event.begin();
   }
@@ -70,9 +69,9 @@ public class JfrExtension implements
     stop(context, TEST_JFR_EVENT);
     
     var event = new AfterEachExecutionEvent();
-    event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     storeEvent(context, AFTER_EACH_JFR_EVENT, event);
     event.begin();
   }
@@ -82,9 +81,8 @@ public class JfrExtension implements
     stop(context, AFTER_EACH_JFR_EVENT);
     
     var event = new AfterAllExecutionEvent();
-    event.setUniqueId(context.getUniqueId());
     event.setDisplayName(context.getDisplayName());
-    context.getTestMethod().ifPresent(method -> event.setTestMethod(method.toString()));
+    context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
     storeEvent(context.getParent().get(), AFTER_ALL_JFR_EVENT, event);
     event.begin();
   }
@@ -112,32 +110,22 @@ public class JfrExtension implements
   }
 
   // defining the properties in the superclass does not seem to work :-(
+  
+
 
   @Category("JUnit")
   @StackTrace(false)
-  @Label("@Test")
-  @Description("execution of a test without @BeforeEach and @AfterEach methods")
-  static class TestExecutionEvent extends Event {
-
-    @Label("Unique ID")
-    @Description("The unique ID of the test or container")
-    private String uniqueId;
+  @Label("@BeforeAll")
+  @Description("execution of all @BeforeAll methods")
+  static class BeforeAllExecutionEvent extends Event {
 
     @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
-
-    @Label("Test Method")
-    @Description("The method associated with the test, if available")
-    private String testMethod;
-
-    String getUniqueId() {
-      return this.uniqueId;
-    }
-
-    void setUniqueId(String operationName) {
-      this.uniqueId = operationName;
-    }
+    
+    @Label("Test Class")
+    @Description("The class associated with the test, if available")
+    private Class<?> testClass;
 
     String getDisplayName() {
       return this.displayName;
@@ -147,12 +135,12 @@ public class JfrExtension implements
       this.displayName = query;
     }
 
-    String getTestMethod() {
-      return this.testMethod;
+    Class<?> getTestClass() {
+      return testClass;
     }
 
-    void setTestMethod(String query) {
-      this.testMethod = query;
+    void setTestClass(Class<?> testClass) {
+      this.testClass = testClass;
     }
 
   }
@@ -163,10 +151,6 @@ public class JfrExtension implements
   @Description("execution of all @BeforeEach methods")
   static class BeforeEachExecutionEvent extends Event {
 
-    @Label("Unique ID")
-    @Description("The unique ID of the test or container")
-    private String uniqueId;
-
     @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
@@ -174,14 +158,10 @@ public class JfrExtension implements
     @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
-
-    String getUniqueId() {
-      return this.uniqueId;
-    }
-
-    void setUniqueId(String operationName) {
-      this.uniqueId = operationName;
-    }
+    
+    @Label("Test Class")
+    @Description("The class associated with the test, if available")
+    private Class<?> testClass;
 
     String getDisplayName() {
       return this.displayName;
@@ -197,6 +177,58 @@ public class JfrExtension implements
 
     void setTestMethod(String query) {
       this.testMethod = query;
+    }
+
+    Class<?> getTestClass() {
+      return testClass;
+    }
+
+    void setTestClass(Class<?> testClass) {
+      this.testClass = testClass;
+    }
+
+  }
+
+  @Category("JUnit")
+  @StackTrace(false)
+  @Label("@Test")
+  @Description("execution of a test without @BeforeEach and @AfterEach methods")
+  static class TestExecutionEvent extends Event {
+
+    @Label("Display Name")
+    @Description("The display name for the test or container")
+    private String displayName;
+
+    @Label("Test Method")
+    @Description("The method associated with the test, if available")
+    private String testMethod;
+    
+    @Label("Test Class")
+    @Description("The class associated with the test, if available")
+    private Class<?> testClass;
+
+    String getDisplayName() {
+      return this.displayName;
+    }
+
+    void setDisplayName(String query) {
+      this.displayName = query;
+    }
+
+    String getTestMethod() {
+      return this.testMethod;
+    }
+
+    void setTestMethod(String query) {
+      this.testMethod = query;
+    }
+
+    Class<?> getTestClass() {
+      return testClass;
+    }
+
+    void setTestClass(Class<?> testClass) {
+      this.testClass = testClass;
     }
 
   }
@@ -207,10 +239,6 @@ public class JfrExtension implements
   @Description("execution of all @AfterEach methods")
   static class AfterEachExecutionEvent extends Event {
 
-    @Label("Unique ID")
-    @Description("The unique ID of the test or container")
-    private String uniqueId;
-
     @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
@@ -218,14 +246,10 @@ public class JfrExtension implements
     @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
-
-    String getUniqueId() {
-      return this.uniqueId;
-    }
-
-    void setUniqueId(String operationName) {
-      this.uniqueId = operationName;
-    }
+    
+    @Label("Test Class")
+    @Description("The class associated with the test, if available")
+    private Class<?> testClass;
 
     String getDisplayName() {
       return this.displayName;
@@ -243,48 +267,12 @@ public class JfrExtension implements
       this.testMethod = query;
     }
 
-  }
-
-  @Category("JUnit")
-  @StackTrace(false)
-  @Label("@BeforeAll")
-  @Description("execution of all @BeforeAll methods")
-  static class BeforeAllExecutionEvent extends Event {
-
-    @Label("Unique ID")
-    @Description("The unique ID of the test or container")
-    private String uniqueId;
-
-    @Label("Display Name")
-    @Description("The display name for the test or container")
-    private String displayName;
-
-    @Label("Test Method")
-    @Description("The method associated with the test, if available")
-    private String testMethod;
-
-    String getUniqueId() {
-      return this.uniqueId;
+    Class<?> getTestClass() {
+      return testClass;
     }
 
-    void setUniqueId(String operationName) {
-      this.uniqueId = operationName;
-    }
-
-    String getDisplayName() {
-      return this.displayName;
-    }
-
-    void setDisplayName(String query) {
-      this.displayName = query;
-    }
-
-    String getTestMethod() {
-      return this.testMethod;
-    }
-
-    void setTestMethod(String query) {
-      this.testMethod = query;
+    void setTestClass(Class<?> testClass) {
+      this.testClass = testClass;
     }
 
   }
@@ -295,25 +283,13 @@ public class JfrExtension implements
   @Description("execution of all @AfterAll methods")
   static class AfterAllExecutionEvent extends Event {
 
-    @Label("Unique ID")
-    @Description("The unique ID of the test or container")
-    private String uniqueId;
-
     @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
-
-    @Label("Test Method")
-    @Description("The method associated with the test, if available")
-    private String testMethod;
-
-    String getUniqueId() {
-      return this.uniqueId;
-    }
-
-    void setUniqueId(String operationName) {
-      this.uniqueId = operationName;
-    }
+    
+    @Label("Test Class")
+    @Description("The class associated with the test, if available")
+    private Class<?> testClass;
 
     String getDisplayName() {
       return this.displayName;
@@ -323,12 +299,12 @@ public class JfrExtension implements
       this.displayName = query;
     }
 
-    String getTestMethod() {
-      return this.testMethod;
+    Class<?> getTestClass() {
+      return testClass;
     }
 
-    void setTestMethod(String query) {
-      this.testMethod = query;
+    void setTestClass(Class<?> testClass) {
+      this.testClass = testClass;
     }
 
   }
