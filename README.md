@@ -14,15 +14,15 @@ The extension supports the following event types in the "JUnit" category.
 
 <dl>
 <dt>@BeforeAll</dt>
-<dd>Contains the execution of all @BeforeAll methods.</dd>
+<dd>Contains the execution of all `@BeforeAll` methods.</dd>
 <dt>@BeforeEach</dt>
-<dd>Contains the execution of all @BeforeEach methods.</dd>
+<dd>Contains the execution of all `@BeforeEach` methods.</dd>
 <dt>@Test</dt>
-<dd>Contains the execution of all @Test methods.</dd>
+<dd>Contains the execution of all `@Test` methods.</dd>
 <dt>@AfterEach</dt>
-<dd>Contains the execution of all @AfterEach methods.</dd>
+<dd>Contains the execution of all `@AfterEach` methods.</dd>
 <dt>@AfterAll</dt>
-<dd>Contains the execution of all @AfterAll methods.</dd>
+<dd>Contains the execution of all `@AfterAll` methods.</dd>
 </dl>
 
 Every event type may also cover some extension methods.
@@ -36,3 +36,15 @@ Usage
   -XX:StartFlightRecording:filename=recording.jfr
   -XX:FlightRecorderOptions:stackdepth=128
   ```
+
+```java
+@JfrProfiled
+class ProfiledTests {
+
+  @Test
+  void testMethod() {
+    // implementation
+  }
+
+}
+```
