@@ -14,15 +14,15 @@ The extension supports the following event types in the "JUnit" category.
 
 <dl>
 <dt>@BeforeAll</dt>
-<dd>Contains the execution of all `@BeforeAll` methods.</dd>
+<dd>Contains the execution of all <code>@BeforeAll</code> methods.</dd>
 <dt>@BeforeEach</dt>
-<dd>Contains the execution of all `@BeforeEach` methods.</dd>
+<dd>Contains the execution of all <code>@BeforeEach</code> methods.</dd>
 <dt>@Test</dt>
-<dd>Contains the execution of all `@Test` methods.</dd>
+<dd>Contains the execution of all <code>@Test</code> methods.</dd>
 <dt>@AfterEach</dt>
-<dd>Contains the execution of all `@AfterEach` methods.</dd>
+<dd>Contains the execution of all <code>@AfterEach</code> methods.</dd>
 <dt>@AfterAll</dt>
-<dd>Contains the execution of all `@AfterAll` methods.</dd>
+<dd>Contains the execution of all <code>@AfterAll</code> methods.</dd>
 </dl>
 
 Every event type may also cover some extension methods.
