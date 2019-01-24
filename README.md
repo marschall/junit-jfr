@@ -1,11 +1,11 @@
-JUnit JFR
+JUnit JFR  [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.marschall/junit-jfr/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.marschall/junit-jfr) [![Javadocs](https://www.javadoc.io/badge/com.github.marschall/junit-jfr.svg)](https://www.javadoc.io/doc/com.github.marschall/junit-jfr)
 =========
 
 A JUnit extension that generates JFR events.
 
 Requires Java 11.
 
-![Flight Recording of a JUnit Test](https://github.com/marschall/junit-jfr/blob/master/src/main/javadoc/screenshot.png)
+![Flight Recording of a JUnit Test](https://raw.githubusercontent.com/marschall/junit-jfr/master/src/main/javadoc/screenshot.png)
 
 Event Types
 -----------
