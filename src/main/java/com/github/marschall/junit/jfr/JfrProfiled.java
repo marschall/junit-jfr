@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
- * Causes a JUnit test to generate Flight Recorder events.
+ * Meta annotation that registers a JUnit extension that causes a JUnit test to generate Flight Recorder events.
  */
 @Documented
 @Retention(RUNTIME)

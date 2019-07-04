@@ -19,7 +19,7 @@ import jdk.jfr.Label;
 import jdk.jfr.StackTrace;
 
 /**
- * Causes a JUnit test to generate Flight Recorder events.
+ * JUnit extension that causes a JUnit test to generate Flight Recorder events.
  */
 public class JfrExtension implements
   BeforeAllCallback, AfterAllCallback,
