@@ -25,15 +25,15 @@ public class JfrExtension implements
   BeforeAllCallback, AfterAllCallback,
   BeforeEachCallback, AfterEachCallback,
   BeforeTestExecutionCallback, AfterTestExecutionCallback {
-  
+
   private static final String BEFORE_ALL_JFR_EVENT = "before all jfr event";
-  
+
   private static final String BEFORE_EACH_JFR_EVENT = "before each jfr event";
 
   private static final String TEST_JFR_EVENT = "test jfr event";
 
   private static final String AFTER_EACH_JFR_EVENT = "after each jfr event";
-  
+
   private static final String AFTER_ALL_JFR_EVENT = "after all jfr event";
 
   @Override
@@ -41,26 +41,26 @@ public class JfrExtension implements
     var event = new BeforeAllExecutionEvent();
     event.setDisplayName(context.getDisplayName());
     context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
-    storeEvent(context, BEFORE_ALL_JFR_EVENT, event);
+    this.storeEvent(context, BEFORE_ALL_JFR_EVENT, event);
     event.begin();
   }
 
   @Override
   public void beforeEach(ExtensionContext context) {
-    stop(context.getParent().get(), BEFORE_ALL_JFR_EVENT);
-    
+    this.stop(context.getParent().get(), BEFORE_ALL_JFR_EVENT);
+
     var event = new BeforeEachExecutionEvent();
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(getMethodName(method)));
     context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
-    storeEvent(context, BEFORE_EACH_JFR_EVENT, event);
+    this.storeEvent(context, BEFORE_EACH_JFR_EVENT, event);
     event.begin();
   }
 
   @Override
   public void beforeTestExecution(ExtensionContext context) {
-    stop(context, BEFORE_EACH_JFR_EVENT);
-    
+    this.stop(context, BEFORE_EACH_JFR_EVENT);
+
     var event = new TestExecutionEvent();
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(getMethodName(method)));
@@ -71,33 +71,33 @@ public class JfrExtension implements
 
   @Override
   public void afterTestExecution(ExtensionContext context) {
-    stop(context, TEST_JFR_EVENT);
-    
+    this.stop(context, TEST_JFR_EVENT);
+
     var event = new AfterEachExecutionEvent();
     event.setDisplayName(context.getDisplayName());
     context.getTestMethod().ifPresent(method -> event.setTestMethod(getMethodName(method)));
     context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
-    storeEvent(context, AFTER_EACH_JFR_EVENT, event);
+    this.storeEvent(context, AFTER_EACH_JFR_EVENT, event);
     event.begin();
   }
 
   @Override
   public void afterEach(ExtensionContext context) {
-    stop(context, AFTER_EACH_JFR_EVENT);
-    
+    this.stop(context, AFTER_EACH_JFR_EVENT);
+
     var event = new AfterAllExecutionEvent();
     event.setDisplayName(context.getDisplayName());
     context.getTestClass().ifPresent(clazz -> event.setTestClass(clazz));
-    storeEvent(context.getParent().get(), AFTER_ALL_JFR_EVENT, event);
+    this.storeEvent(context.getParent().get(), AFTER_ALL_JFR_EVENT, event);
     event.begin();
   }
 
   @Override
   public void afterAll(ExtensionContext context) {
     // runs affter @AfterAll
-    stop(context, AFTER_ALL_JFR_EVENT);
+    this.stop(context, AFTER_ALL_JFR_EVENT);
   }
-  
+
   private void stop(ExtensionContext context, String key) {
     var event = this.getStore(context).remove(key, Event.class);
     if (event != null) {
@@ -109,11 +109,11 @@ public class JfrExtension implements
   private Store getStore(ExtensionContext context) {
     return context.getStore(Namespace.create(this.getClass(), context.getUniqueId()));
   }
-  
+
   private void storeEvent(ExtensionContext context, String key, Event event) {
     this.getStore(context).put(key, event);
   }
-  
+
   private static String getMethodName(Method method) {
     boolean isVoid = method.getReturnType() == Void.TYPE;
     boolean hasParameters = method.getParameterCount() == 0;
@@ -141,7 +141,7 @@ public class JfrExtension implements
   }
 
   // defining the properties in the superclass does not seem to work :-(
-  
+
 
 
   @Category("JUnit")
@@ -153,7 +153,7 @@ public class JfrExtension implements
     @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
-    
+
     @Label("Test Class")
     @Description("The class associated with the test, if available")
     private Class<?> testClass;
@@ -167,7 +167,7 @@ public class JfrExtension implements
     }
 
     Class<?> getTestClass() {
-      return testClass;
+      return this.testClass;
     }
 
     void setTestClass(Class<?> testClass) {
@@ -189,7 +189,7 @@ public class JfrExtension implements
     @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
-    
+
     @Label("Test Class")
     @Description("The class associated with the test, if available")
     private Class<?> testClass;
@@ -211,7 +211,7 @@ public class JfrExtension implements
     }
 
     Class<?> getTestClass() {
-      return testClass;
+      return this.testClass;
     }
 
     void setTestClass(Class<?> testClass) {
@@ -233,7 +233,7 @@ public class JfrExtension implements
     @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
-    
+
     @Label("Test Class")
     @Description("The class associated with the test, if available")
     private Class<?> testClass;
@@ -255,7 +255,7 @@ public class JfrExtension implements
     }
 
     Class<?> getTestClass() {
-      return testClass;
+      return this.testClass;
     }
 
     void setTestClass(Class<?> testClass) {
@@ -277,7 +277,7 @@ public class JfrExtension implements
     @Label("Test Method")
     @Description("The method associated with the test, if available")
     private String testMethod;
-    
+
     @Label("Test Class")
     @Description("The class associated with the test, if available")
     private Class<?> testClass;
@@ -299,7 +299,7 @@ public class JfrExtension implements
     }
 
     Class<?> getTestClass() {
-      return testClass;
+      return this.testClass;
     }
 
     void setTestClass(Class<?> testClass) {
@@ -317,7 +317,7 @@ public class JfrExtension implements
     @Label("Display Name")
     @Description("The display name for the test or container")
     private String displayName;
-    
+
     @Label("Test Class")
     @Description("The class associated with the test, if available")
     private Class<?> testClass;
@@ -331,7 +331,7 @@ public class JfrExtension implements
     }
 
     Class<?> getTestClass() {
-      return testClass;
+      return this.testClass;
     }
 
     void setTestClass(Class<?> testClass) {
