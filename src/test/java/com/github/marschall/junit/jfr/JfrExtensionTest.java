@@ -96,7 +96,7 @@ class JfrExtensionTest {
     private String name;
 
     String getName() {
-      return name;
+      return this.name;
     }
 
     void setName(String name) {
