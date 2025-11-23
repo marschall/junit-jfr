@@ -58,6 +58,12 @@ class ProfiledTests {
 }
 ```
 
+Comparison with JUnit 6 JFR Support
+-------------------------------------
+
+Built in JFR support in JUnit 6 is much easier to use as it requires no dependencies and no additional annotations. However the built in JFR support in JUnit does not generate events for `@BeforeAll`, `@BeforeEach`, `@AfterEach` and `@AfterAll` methods.
+
+
 Comparison with JUnit 5.7 JFR Support
 -------------------------------------
 
